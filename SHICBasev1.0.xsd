@@ -10,6 +10,8 @@ Changes will be proper extensions or constraints on that schema.
  	7/11/16 Initial draft copy from NAHLN
  	7/11/16 Added country to all XAD addresses including CountryCode data type with CAN MEX and USA
  	7/11/16 Removed nillable throughout
+ 	7/12/16 Made PID.35 mandatory
+ 	7/13/16 Added OBX.7 reference range to the RESULT OBX
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -2353,6 +2355,10 @@ Changes will be proper extensions or constraints on that schema.
 									</xsd:sequence>
 								</xsd:complexType>
 							</xsd:element>
+							<!-- Reference range (NN.N - NN.N or >NN.N or <NN.N) 
+							     If species, age, etc. specific this applies to the demographics
+							     in this patient/specimen/etc.  -->
+							<xsd:element name="OBX.7" type="xsd:string" minOccurs="0"/>
 							<!-- Abnormal Flags: Interpretation (See Implementation Guide for Codes) -->
 							<xsd:element name="OBX.8" type="xsd:string" minOccurs="0"
 								nillable="true" maxOccurs="1"/>
