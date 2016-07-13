@@ -8,6 +8,8 @@ Changes will be proper extensions or constraints on that schema.
 
  <!-- CHANGE LOG
  	7/11/16 Initial draft copy from NAHLN
+ 	7/11/16 Added country to all XAD addresses including CountryCode data type with CAN MEX and USA
+ 	7/11/16 Removed nillable throughout
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -57,6 +59,14 @@ Changes will be proper extensions or constraints on that schema.
 			<xsd:pattern
 				value="(\d{4}(((0[1-9])|(1[0-2]))(((0[1-9])|([1-2]\d)|(3[0-1]))((([01]\d|2[0-3])([0-5]\d))(([0-5]\d)((\.\d{1,4}))?)?)?)?)?([+\-](([0]\d|1[0-3])([0-5]\d)))?)?"
 			/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CountryCode">
+		<!-- Note: Initial emumeration includes just Canada, Mexico and US.  This can be expanded as needed. -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CAN"/>
+			<xsd:enumeration value="MEX"/>
+			<xsd:enumeration value="USA"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="StateCode">
@@ -275,7 +285,7 @@ Changes will be proper extensions or constraints on that schema.
 				<xsd:element ref="PV1"/>
 				<!-- One instance was used for listing the reason for testing.  This is now
 					 to be sent in OBR.31.  -->
-				<xsd:element name="OBX" type="VISIT.OBX" minOccurs="0" nillable="true"
+				<xsd:element name="OBX" type="VISIT.OBX" minOccurs="0"
 					maxOccurs="unbounded"/>
 				<!-- And one or more roles for Submitter plus, depending on program, collector, premises, etc. -->
 				<!-- Most but not all testing programs require a SUB instance. -->
@@ -308,7 +318,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:simpleType>
 				</xsd:element>
 				<!-- Sending application -->
-				<xsd:element name="MSH.3" minOccurs="0" nillable="true">
+				<xsd:element name="MSH.3" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Lab Constant Application Abbrev -->
@@ -344,7 +354,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Receiving application -->
-				<xsd:element name="MSH.5" minOccurs="0" nillable="true">
+				<xsd:element name="MSH.5" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- NAHLN Application Abbrev -->
@@ -357,7 +367,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Receiving facility -->
-				<xsd:element name="MSH.6" minOccurs="0" nillable="true">
+				<xsd:element name="MSH.6" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- NAHLN Constant 0034P2K -->
@@ -465,7 +475,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:simpleType>
 				</xsd:element>
 				<!-- Attending doctor is Responsible Diagnostician for NAHLN messages -->
-				<xsd:element name="PV1.7" minOccurs="0" nillable="true">
+				<xsd:element name="PV1.7" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Lab's identifier for the diagnostician -->
@@ -489,7 +499,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!--Assigning authority of ID in XCN.1 -->
-							<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+							<xsd:element name="XCN.9" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Lab's OID or OID of Lab's Diagnostician number system -->
@@ -543,7 +553,7 @@ Changes will be proper extensions or constraints on that schema.
 							reason for visit. -->
 						<xsd:element name="CWE.1" type="nonNullString"/>
 						<!-- NAHLN Constant "Reason for Visit" -->
-						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN Constant "LN" -->
 						<xsd:element name="CWE.3" type="LN"/>
 					</xsd:sequence>
@@ -558,19 +568,19 @@ Changes will be proper extensions or constraints on that schema.
 						       This could need to be redefined as one of our ANY fields depending on future 
 						               uses of observation on the visit -->
 						<!-- Result NAHLN code for reason for visit: S Surveillance, D Diagnostic, etc. -->
-						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0"/>
 						<!-- Result Text: "Surveillance, etc." -->
-						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN Constant "L" -->
-						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0"/>
 						<!-- Local code for reason for visit: S Surveillance, D Diagnostic, etc. -->
-						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"/>
 						<!-- Local Result Text: "Surveillance, etc." -->
-						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN Constant "L" -->
-						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0"/>
 						<!-- Original text of reason for visit -->
-						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -590,7 +600,7 @@ Changes will be proper extensions or constraints on that schema.
 		<xsd:complexType>
 			<xsd:sequence>
 				<!-- Role instance ID.  Identifier qualifying this person to participate in this role. -->
-				<xsd:element name="ROL.1" minOccurs="0" nillable="true">
+				<xsd:element name="ROL.1" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Identifier, participant number, etc. -->
@@ -657,7 +667,7 @@ Changes will be proper extensions or constraints on that schema.
 							<!-- Name Suffix -->
 							<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
 							<!-- Assigning Authority -->
-							<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+							<xsd:element name="XCN.9" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- OID of assigner of ID in XCN.1 -->
@@ -672,7 +682,7 @@ Changes will be proper extensions or constraints on that schema.
 				</xsd:element>
 				<!-- Address: Note: this is a very loose constraint on XAD to allow
 				     sending of just State or just Other Designation, etc. -->
-				<xsd:element name="ROL.11" minOccurs="0" nillable="true">
+				<xsd:element name="ROL.11" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<xsd:element name="XAD.1" minOccurs="0">
@@ -695,6 +705,8 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="XAD.4" type="StateCode" minOccurs="0"/>
 							<!-- Zipcode -->
 							<xsd:element name="XAD.5" type="nonNullString" minOccurs="0"/>
+							<!-- Country: Three letter ISO Code; USA, CAN, MEX. Default assumed to be USA. -->
+							<xsd:element name="XAD.6" type="CountryCode" minOccurs="0"/>
 							<!-- Other designation such as Lat Long (in ROL, use PL.10 for PINs -->
 							<xsd:element name="XAD.8" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -705,7 +717,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Phone -->
-				<xsd:element name="ROL.12" minOccurs="0" nillable="true" maxOccurs="unbounded">
+				<xsd:element name="ROL.12" minOccurs="0" maxOccurs="unbounded">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Use code: WPN, PRN, EMR, NET, etc. -->
@@ -760,12 +772,12 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="XTN.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- Area code -->
-							<xsd:element name="XTN.6" type="AREACODE" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.6" type="AREACODE" minOccurs="0"/>
 							<!-- Local number -->
 							<xsd:element name="XTN.7" type="PHONENUMBER" minOccurs="0"
 								nillable="true"/>
 							<!-- Extension -->
-							<xsd:element name="XTN.8" type="EXTENSION" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.8" type="EXTENSION" minOccurs="0"/>
 							<!-- Unformatted number if not parsable -->
 							<xsd:element name="XTN.12" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -773,12 +785,12 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Person location Used for premises ID -->
-				<xsd:element name="ROL.13" minOccurs="0" nillable="true">
+				<xsd:element name="ROL.13" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Location Type "P" (User defined table definition for Production Unit, See 
 								implementation guide for additional values.) -->
-							<xsd:element name="PL.6" minOccurs="0" nillable="true">
+							<xsd:element name="PL.6" minOccurs="0">
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
 										<xsd:enumeration value="C"/>
@@ -807,9 +819,9 @@ Changes will be proper extensions or constraints on that schema.
 								</xsd:simpleType>
 							</xsd:element>
 							<!-- Location Description -->
-							<xsd:element name="PL.9" type="xsd:string" minOccurs="0" nillable="true"/>
+							<xsd:element name="PL.9" type="xsd:string" minOccurs="0"/>
 							<!-- Location Identifier -->
-							<xsd:element name="PL.10" minOccurs="0" nillable="true">
+							<xsd:element name="PL.10" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Premises ID -->
@@ -835,7 +847,7 @@ Changes will be proper extensions or constraints on that schema.
 				<!-- NK1 Represents the "Owner" who is the person most responsible for the animals or location being tested -->
 				<xsd:element ref="NK1"/>
 				<xsd:element ref="OPU_R25.PATIENT" minOccurs="0"/>
-				<!-- set to nillable="true" in element definition below.-->
+				<!-- set to in element definition below.-->
 				<xsd:element ref="OPU_R25.SPECIMEN" maxOccurs="unbounded"/>
 			</xsd:sequence>
 		</xsd:complexType>
@@ -849,7 +861,7 @@ Changes will be proper extensions or constraints on that schema.
 				<!-- Sequence ID: NAHLN Constant "1" -->
 				<xsd:element name="NK1.1" type="xsd:int"/>
 				<!-- Owner Name -->
-				<xsd:element name="NK1.2" minOccurs="0" nillable="true">
+				<xsd:element name="NK1.2" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<xsd:element name="XPN.1">
@@ -906,7 +918,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Owner Address -->
-				<xsd:element name="NK1.4" minOccurs="0" nillable="true">
+				<xsd:element name="NK1.4" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<xsd:element name="XAD.1">
@@ -928,10 +940,12 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="XAD.3" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- State (Two character abbreviation) -->
-							<xsd:element name="XAD.4" type="StateCode" minOccurs="0" nillable="true"/>
+							<xsd:element name="XAD.4" type="StateCode" minOccurs="0"/>
 							<!-- Zipcode -->
 							<xsd:element name="XAD.5" type="xsd:string" minOccurs="0"
 								nillable="true"/>
+							<!-- Country: Three letter ISO Code; USA, CAN, MEX. Default assumed to be USA. -->
+							<xsd:element name="XAD.6" type="CountryCode" minOccurs="0"/>
 							<!-- Other Designation including Lat Long or PIN/LID -->
 							<xsd:element name="XAD.8" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -942,7 +956,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Owner home phone(s) -->
-				<xsd:element name="NK1.5" minOccurs="0" nillable="true" maxOccurs="unbounded">
+				<xsd:element name="NK1.5" minOccurs="0" maxOccurs="unbounded">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Use code: PRN -->
@@ -953,11 +967,11 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="XTN.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- Area code -->
-							<xsd:element name="XTN.6" type="xsd:int" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.6" type="xsd:int" minOccurs="0"/>
 							<!-- Local number -->
-							<xsd:element name="XTN.7" type="xsd:int" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.7" type="xsd:int" minOccurs="0"/>
 							<!-- Extension -->
-							<xsd:element name="XTN.8" type="xsd:int" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.8" type="xsd:int" minOccurs="0"/>
 							<!-- Unformatted number if not parsable -->
 							<xsd:element name="XTN.12" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -965,7 +979,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Owner business phone(s) -->
-				<xsd:element name="NK1.6" minOccurs="0" nillable="true" maxOccurs="unbounded">
+				<xsd:element name="NK1.6" minOccurs="0" maxOccurs="unbounded">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Use code: WPN -->
@@ -976,11 +990,11 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="XTN.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- Area code -->
-							<xsd:element name="XTN.6" type="xsd:int" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.6" type="xsd:int" minOccurs="0"/>
 							<!-- Local number -->
-							<xsd:element name="XTN.7" type="xsd:int" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.7" type="xsd:int" minOccurs="0"/>
 							<!-- Extension -->
-							<xsd:element name="XTN.8" type="xsd:int" minOccurs="0" nillable="true"/>
+							<xsd:element name="XTN.8" type="xsd:int" minOccurs="0"/>
 							<!-- Unformatted number if not parsable -->
 							<xsd:element name="XTN.12" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -988,7 +1002,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Owner business name -->
-				<xsd:element name="NK1.13" minOccurs="0" nillable="true">
+				<xsd:element name="NK1.13" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Business Name -->
@@ -997,7 +1011,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Owner primary language -->
-				<xsd:element name="NK1.20" minOccurs="0" nillable="true">
+				<xsd:element name="NK1.20" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Code See list of ISO abbreviations in implementation guide -->
@@ -1029,7 +1043,7 @@ Changes will be proper extensions or constraints on that schema.
 	</xsd:element>
 
 	<!-- PATIENT has one segment with only a few fields only species is critical here.  Production class is required by may be Unknown -->
-	<xsd:element name="OPU_R25.PATIENT" nillable="true">
+	<xsd:element name="OPU_R25.PATIENT">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="PID">
@@ -1042,12 +1056,12 @@ Changes will be proper extensions or constraints on that schema.
 										<!-- Identifier (AIN or GIN preferred) -->
 										<xsd:element name="CX.1" type="nonNullString"/>
 										<!-- Assigning Authority -->
-										<xsd:element name="CX.4" minOccurs="0" nillable="true">
+										<xsd:element name="CX.4" minOccurs="0">
 											<xsd:complexType>
 												<xsd:sequence>
 												<!-- Either Text of Assigner here -->
 												<xsd:element name="HD.1" type="xsd:string"
-												minOccurs="0" nillable="true"/>
+												minOccurs="0"/>
 												<!-- OR OID of Assigner (preferred) here -->
 												<xsd:element name="HD.2" type="OID" minOccurs="0"
 												nillable="true"/>
@@ -1082,7 +1096,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="PID.7" type="CondDateTime" minOccurs="0"
 								nillable="true"/>
 							<!-- Administrative Sex (F,S,M,C,U, or X See Implementation Guide)-->
-							<xsd:element name="PID.8" minOccurs="0" nillable="true">
+							<xsd:element name="PID.8" minOccurs="0">
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
 										<xsd:enumeration value="F"/>
@@ -1133,14 +1147,14 @@ Changes will be proper extensions or constraints on that schema.
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Street Address -->
-										<xsd:element name="XAD.1" minOccurs="0" nillable="true">
+										<xsd:element name="XAD.1" minOccurs="0">
 											<xsd:complexType>
 												<xsd:sequence>
 												<!-- Street Address -->
 												<xsd:element name="SAD.1" type="nonNullString"/>
 												<!-- Apartment number -->
 												<xsd:element name="SAD.3" type="xsd:string"
-												minOccurs="0" nillable="true"/>
+												minOccurs="0"/>
 												</xsd:sequence>
 											</xsd:complexType>
 										</xsd:element>
@@ -1156,6 +1170,8 @@ Changes will be proper extensions or constraints on that schema.
 										<!-- Zipcode -->
 										<xsd:element name="XAD.5" type="xsd:string" minOccurs="0"
 											nillable="true"/>
+										<!-- Country: Three letter ISO Code; USA, CAN, MEX. Default assumed to be USA. -->
+										<xsd:element name="XAD.6" type="CountryCode" minOccurs="0"/>
 										<!-- GPS Coordinates, Premises ID, etc.  -->
 										<xsd:element name="XAD.8" type="xsd:string" minOccurs="0"
 											nillable="true"/>
@@ -1166,13 +1182,13 @@ Changes will be proper extensions or constraints on that schema.
 								</xsd:complexType>
 							</xsd:element>
 							<!-- Date and time of death to as much precision as known YYYYMMDDHHMM-ZZZZ -->
-							<xsd:element name="PID.29" type="DateTime" minOccurs="0" nillable="true"/>
+							<xsd:element name="PID.29" type="DateTime" minOccurs="0"/>
 							<!-- Patient death indicator: "Y" if death, normally omitted but my be "N" for live prior to testing -->
-							<xsd:element name="PID.30" type="YN" minOccurs="0" nillable="true"/>
+							<xsd:element name="PID.30" type="YN" minOccurs="0"/>
 							<!-- Identity unknown indicator: "Y" for John Doe's, normally omitted but may be set to "N" -->
-							<xsd:element name="PID.31" type="YN" minOccurs="0" nillable="true"/>
+							<xsd:element name="PID.31" type="YN" minOccurs="0"/>
 							<!-- Taxonomic classification -->
-							<xsd:element name="PID.35" minOccurs="0" nillable="true">
+							<xsd:element name="PID.35" minOccurs="1">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- SNOMED Code -->
@@ -1191,7 +1207,7 @@ Changes will be proper extensions or constraints on that schema.
 										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"
 											nillable="true"/>
 										<!-- Alt Code System -->
-										<xsd:element name="CWE.6" minOccurs="0" nillable="true">
+										<xsd:element name="CWE.6" minOccurs="0">
 											<xsd:simpleType>
 												<xsd:restriction base="xsd:string">
 												<xsd:enumeration value="L"/>
@@ -1213,11 +1229,11 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="PID.37" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- Production Class -->
-							<xsd:element name="PID.38" minOccurs="0" nillable="true">
+							<xsd:element name="PID.38" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Production Type Code -->
-										<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+										<xsd:element name="CWE.1" minOccurs="0">
 											<xsd:simpleType>
 												<xsd:restriction base="xsd:string">
 												<xsd:enumeration value="BR"/>
@@ -1279,7 +1295,7 @@ Changes will be proper extensions or constraints on that schema.
 										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
 											nillable="true"/>
 										<!-- NAHLN Constant  "HL70429" -->
-										<xsd:element name="CWE.3" minOccurs="0" nillable="true">
+										<xsd:element name="CWE.3" minOccurs="0">
 											<xsd:simpleType>
 												<xsd:restriction base="nonNullString">
 												<xsd:enumeration value="HL70429"/>
@@ -1293,7 +1309,7 @@ Changes will be proper extensions or constraints on that schema.
 										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"
 											nillable="true"/>
 										<!-- Alt Code System -->
-										<xsd:element name="CWE.6" minOccurs="0" nillable="true">
+										<xsd:element name="CWE.6" minOccurs="0">
 											<xsd:simpleType>
 												<xsd:restriction base="xsd:string">
 												<xsd:enumeration value="L"/>
@@ -1310,7 +1326,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Observations on the patient.  If more than one, the entire PATIENT_OBSERVATION group repeats -->
-				<xsd:element name="OPU_R25.PATIENT_OBSERVATION" minOccurs="0" nillable="true"
+				<xsd:element name="OPU_R25.PATIENT_OBSERVATION" minOccurs="0"
 					maxOccurs="unbounded">
 					<xsd:complexType>
 						<xsd:sequence>
@@ -1348,38 +1364,38 @@ Changes will be proper extensions or constraints on that schema.
 				<xsd:complexType mixed="true">
 					<xsd:sequence>
 						<!-- Comparator: =, <, <=, >, >= -->
-						<xsd:element name="SN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.1" type="xsd:string" minOccurs="0"/>
 						<!-- Number 1 -->
-						<xsd:element name="SN.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.2" type="xsd:string" minOccurs="0"/>
 						<!-- Separator: :, -, etc.-->
-						<xsd:element name="SN.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.3" type="xsd:string" minOccurs="0"/>
 						<!-- Number 2 -->
-						<xsd:element name="SN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.4" type="xsd:string" minOccurs="0"/>
 						<!-- Code -->
-						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0"/>
 						<!-- Text -->
-						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- Code System -->
-						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0"/>
 						<!-- Alt Code -->
-						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"/>
 						<!-- Alt Text -->
-						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"/>
 						<!-- Alt Code System -->
-						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0"/>
 						<!-- Original Text -->
-						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<!-- Units if applicable -->
-			<xsd:element name="OBX.6" minOccurs="0" nillable="true">
+			<xsd:element name="OBX.6" minOccurs="0">
 				<xsd:complexType>
 					<xsd:sequence>
 						<!-- Units Code -->
 						<xsd:element name="CWE.1" type="nonNullString"/>
 						<!-- Units Text -->
-						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN constant "ISO" -->
 						<xsd:element name="CWE.3" type="ISO"/>
 					</xsd:sequence>
@@ -1398,7 +1414,7 @@ Changes will be proper extensions or constraints on that schema.
 			    For clinical observations on the patient this is the time the observation was made
 			    or the time of the event observed such as vaccination history is the date
 			    (or month, year, etc. the vaccine as given.  -->
-			<xsd:element name="OBX.14" type="DateTime" minOccurs="0" nillable="true"/>
+			<xsd:element name="OBX.14" type="DateTime" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -1408,7 +1424,7 @@ Changes will be proper extensions or constraints on that schema.
 				<!-- Specimen Segment -->
 				<xsd:element ref="SPM"/>
 				<!-- Zero or more observations on the specimen each in its own group -->
-				<xsd:element name="OPU_R25.SPECIMEN_OBSERVATION" minOccurs="0" nillable="true"
+				<xsd:element name="OPU_R25.SPECIMEN_OBSERVATION" minOccurs="0"
 					maxOccurs="unbounded">
 					<xsd:complexType>
 						<xsd:sequence>
@@ -1464,11 +1480,11 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Repeats for each individual specimen in the pool or single instance for sub-sample, alloquot, etc. -->
-				<xsd:element name="SPM.3" minOccurs="0" nillable="true" maxOccurs="unbounded">
+				<xsd:element name="SPM.3" minOccurs="0" maxOccurs="unbounded">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Placer assigned parent specimen ID -->
-							<xsd:element name="EIP.1" minOccurs="0" nillable="true">
+							<xsd:element name="EIP.1" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Placer Assigned specimen id for specimen -->
@@ -1486,7 +1502,7 @@ Changes will be proper extensions or constraints on that schema.
 								</xsd:complexType>
 							</xsd:element>
 							<!-- Filler (Lab) assigned parent specimen ID -->
-							<xsd:element name="EIP.2" minOccurs="0" nillable="true">
+							<xsd:element name="EIP.2" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Lab Assigned specimen id for parent specimen -->
@@ -1512,7 +1528,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- NAHLN Constant "SCT" -->
-							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0"/>
 							<!-- Alternate code for specimen type-->
 							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -1529,7 +1545,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Specimen Additives -->
-				<xsd:element name="SPM.6" minOccurs="0" nillable="true" maxOccurs="unbounded">
+				<xsd:element name="SPM.6" minOccurs="0" maxOccurs="unbounded">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- SNOMED code for specimen additive-->
@@ -1539,7 +1555,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- NAHLN Constant "SCT" -->
-							<xsd:element name="CWE.3" type="SCTor371" minOccurs="0" nillable="true"/>
+							<xsd:element name="CWE.3" type="SCTor371" minOccurs="0"/>
 							<!-- Alternate code for specimen additive-->
 							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -1556,7 +1572,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Specimen Source Site -->
-				<xsd:element name="SPM.8" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.8" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- SNOMED code for specimen source site-->
@@ -1566,7 +1582,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- NAHLN Constant "SCT" -->
-							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0"/>
 							<!-- Alternate code for specimen source site-->
 							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -1614,11 +1630,11 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Grouped Specimen Count -->
-				<xsd:element name="SPM.13" type="xsd:int" minOccurs="0" nillable="true"/>
+				<xsd:element name="SPM.13" type="xsd:int" minOccurs="0"/>
 				<!-- Specimen Description -->
-				<xsd:element name="SPM.14" type="xsd:string" minOccurs="0" nillable="true"/>
+				<xsd:element name="SPM.14" type="xsd:string" minOccurs="0"/>
 				<!-- Specimen Collection Date/Time: If available is the most important date/time for Epi -->
-				<xsd:element name="SPM.17" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.17" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Start time used since collection is virtually instantaneous for our samples. YYYYMMDDHHMM-ZZZZ -->
@@ -1630,11 +1646,11 @@ Changes will be proper extensions or constraints on that schema.
 				<xsd:element name="SPM.18" type="DateTime" nillable="false"/>
 				<!--Added 11-14-2007 Shane Linke-->
 				<!-- Specimen Reject Reason (See Implementation Guide for Codes-->
-				<xsd:element name="SPM.21" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.21" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Code for specimen reject reason (see table 0490)-->
-							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+							<xsd:element name="CWE.1" minOccurs="0">
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
 										<xsd:enumeration value="EX"/>
@@ -1704,11 +1720,11 @@ Changes will be proper extensions or constraints on that schema.
 						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
-				<xsd:element name="SPM.22" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.22" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Code for specimen quality ( E, G, F, P, see Implementation Guide for Codes)-->
-							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+							<xsd:element name="CWE.1" minOccurs="0">
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
 										<xsd:enumeration value="E"/>
@@ -1748,11 +1764,11 @@ Changes will be proper extensions or constraints on that schema.
 						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
-				<xsd:element name="SPM.23" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.23" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Code for specimen appropriateness ( P, A, I, See Implementation Guide for Codes)-->
-							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+							<xsd:element name="CWE.1" minOccurs="0">
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
 										<xsd:enumeration value="P"/>
@@ -1790,11 +1806,11 @@ Changes will be proper extensions or constraints on that schema.
 						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
-				<xsd:element name="SPM.24" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.24" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Code for specimen condition ( FROZ, COOL, etc, see Implementation Guide for Codes)-->
-							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+							<xsd:element name="CWE.1" minOccurs="0">
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
 										<xsd:enumeration value="AUT"/>
@@ -1847,9 +1863,9 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Number of Specimen Containers -->
-				<xsd:element name="SPM.26" type="xsd:int" minOccurs="0" nillable="true"/>
+				<xsd:element name="SPM.26" type="xsd:int" minOccurs="0"/>
 				<!-- Container Type -->
-				<xsd:element name="SPM.27" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.27" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- SNOMED code for container type once available -->
@@ -1859,7 +1875,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- NAHLN Constant "SCT" -->
-							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0"/>
 							<!-- Alternate code for container type (If local system codes container types, include in 4-6) -->
 							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -1876,7 +1892,7 @@ Changes will be proper extensions or constraints on that schema.
 					</xsd:complexType>
 				</xsd:element>
 				<!-- Container Condition -->
-				<xsd:element name="SPM.28" minOccurs="0" nillable="true">
+				<xsd:element name="SPM.28" minOccurs="0">
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- SNOMED code for container condition once available -->
@@ -1886,7 +1902,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- NAHLN Constant "SCT" -->
-							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0"/>
 							<!-- Alternate code for container condition (If local system codes container conditions, include in 4-6) -->
 							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
@@ -1918,51 +1934,51 @@ Changes will be proper extensions or constraints on that schema.
 						<!-- NAHLN Constant "42186-7" -->
 						<xsd:element name="CWE.1" type="nonNullString"/>
 						<!-- NAHLN Constant "Number Spec Recd XXX Qn" -->
-						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN Constant "LN" -->
 						<xsd:element name="CWE.3" type="LN"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<!-- Value of observation on Specimen Value -->
-			<xsd:element name="OBX.5" minOccurs="0" nillable="true">
+			<xsd:element name="OBX.5" minOccurs="0">
 				<!-- Our definition of ANY because this may support various types of observations -->
 				<!-- mixed="true" allows for ST and NM types -->
 				<xsd:complexType mixed="true">
 					<xsd:sequence>
 						<!-- Comparator: =, <, <=, >, >= -->
-						<xsd:element name="SN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.1" type="xsd:string" minOccurs="0"/>
 						<!-- Number 1 -->
-						<xsd:element name="SN.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.2" type="xsd:string" minOccurs="0"/>
 						<!-- Separator: :, -, etc.-->
-						<xsd:element name="SN.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.3" type="xsd:string" minOccurs="0"/>
 						<!-- Number 2 -->
-						<xsd:element name="SN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="SN.4" type="xsd:string" minOccurs="0"/>
 						<!-- Code -->
-						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0"/>
 						<!-- Text -->
-						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- Code System -->
-						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0"/>
 						<!-- Alt Code -->
-						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"/>
 						<!-- Alt Text -->
-						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"/>
 						<!-- Alt Code System -->
-						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0"/>
 						<!-- Original Text -->
-						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<!-- Units if applicable -->
-			<xsd:element name="OBX.6" minOccurs="0" nillable="true">
+			<xsd:element name="OBX.6" minOccurs="0">
 				<xsd:complexType>
 					<xsd:sequence>
 						<!-- Units Code -->
 						<xsd:element name="CWE.1" type="nonNullString"/>
 						<!-- Units Text -->
-						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN constant "ISO" -->
 						<xsd:element name="CWE.3" type="ISO"/>
 					</xsd:sequence>
@@ -1988,7 +2004,7 @@ Changes will be proper extensions or constraints on that schema.
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- Placer Order Number -->
-							<xsd:element name="OBR.2" minOccurs="0" nillable="true">
+							<xsd:element name="OBR.2" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Order number as received from field -->
@@ -2049,7 +2065,7 @@ Changes will be proper extensions or constraints on that schema.
 							<!-- Date/Time report released YYYYMMDDHHMMSS-ZZZZ -->
 							<xsd:element name="OBR.22" type="DateTime"/>
 							<!-- Parent Order Number: If this order is a reflex order from an identified parent order this is used to link them. -->
-							<xsd:element name="OBR.29" minOccurs="0" nillable="true">
+							<xsd:element name="OBR.29" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Filler Order Number -->
@@ -2112,7 +2128,7 @@ Changes will be proper extensions or constraints on that schema.
 								</xsd:simpleType>
 							</xsd:element>
 							<!-- Placer Group Number: Used for referral numbers, etc. -->
-							<xsd:element name="ORC.4" minOccurs="0" nillable="true">
+							<xsd:element name="ORC.4" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Referral Number (may be omitted if EI.3 is just for program OID -->
@@ -2156,18 +2172,18 @@ Changes will be proper extensions or constraints on that schema.
 							<!-- Date/Time of transaction YYYYMMDDHHMMSS 
 								Ideally reflects the time the results were available to send, not the time sent
 								System time stamp will work -->
-							<xsd:element name="ORC.9" type="DateTime" minOccurs="0" nillable="true"/>
+							<xsd:element name="ORC.9" type="DateTime" minOccurs="0"/>
 							<!--Added 11-14-2007 Shane Linke-->
 							<!-- Order entered by 
 							Not currently used but supported for future use especially with round trip orders.
 							Either ID or Name must be provided. -->
-							<xsd:element name="ORC.10" minOccurs="0" nillable="true">
+							<xsd:element name="ORC.10" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Identifier of order entry person -->
 										<xsd:element name="XCN.1" type="xsd:string" minOccurs="0"
 											nillable="true"/>
-										<xsd:element name="XCN.2" minOccurs="0" nillable="true">
+										<xsd:element name="XCN.2" minOccurs="0">
 											<xsd:complexType>
 												<xsd:sequence>
 												<!-- Last Name -->
@@ -2182,7 +2198,7 @@ Changes will be proper extensions or constraints on that schema.
 										<!-- Name suffix (sr. jr. etc.) of enterer -->
 										<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
 										<!--Assigning authority of ID in XCN.1 -->
-										<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+										<xsd:element name="XCN.9" minOccurs="0">
 											<xsd:complexType>
 												<xsd:sequence>
 												<!-- Lab's OID or OID of Lab's Employee number system -->
@@ -2199,12 +2215,12 @@ Changes will be proper extensions or constraints on that schema.
 								Not currently used but supported for future use especially with round trip orders.
 								Either ID or Name must be provided.
 							-->
-							<xsd:element name="ORC.11" minOccurs="0" nillable="true">
+							<xsd:element name="ORC.11" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Identifier of order verifier -->
 										<xsd:element name="XCN.1" type="xsd:string" minOccurs="0"/>
-										<xsd:element name="XCN.2" minOccurs="0" nillable="true">
+										<xsd:element name="XCN.2" minOccurs="0">
 											<xsd:complexType>
 												<xsd:sequence>
 												<!-- Last Name -->
@@ -2219,7 +2235,7 @@ Changes will be proper extensions or constraints on that schema.
 										<!-- Name suffix (sr. jr. etc.) of verifier -->
 										<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
 										<!--Assigning authority of ID in XCN.1 -->
-										<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+										<xsd:element name="XCN.9" minOccurs="0">
 											<xsd:complexType>
 												<xsd:sequence>
 												<!-- Lab's OID or OID of Lab's Employee number system -->
@@ -2249,7 +2265,7 @@ Changes will be proper extensions or constraints on that schema.
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- OBX.2 is not present only if OBX.11 is valued X -->
-							<xsd:element name="OBX.2" minOccurs="0" nillable="true">
+							<xsd:element name="OBX.2" minOccurs="0">
 								<!-- Result type code CWE. CWE, NM, SN, ST -->
 								<xsd:simpleType>
 									<xsd:restriction base="xsd:string">
@@ -2282,7 +2298,7 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="OBX.4" type="xsd:string" minOccurs="0"
 								nillable="true"/>
 							<!-- Actual Test Result Value -->
-							<xsd:element name="OBX.5" minOccurs="0" nillable="true">
+							<xsd:element name="OBX.5" minOccurs="0">
 								<!-- Our definition of ANY because this may support various types of observations -->
 								<!-- mixed="true" allows for ST and NM types -->
 								<xsd:complexType mixed="true">
@@ -2324,7 +2340,7 @@ Changes will be proper extensions or constraints on that schema.
 								</xsd:complexType>
 							</xsd:element>
 							<!-- Units if applicable -->
-							<xsd:element name="OBX.6" minOccurs="0" nillable="true">
+							<xsd:element name="OBX.6" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- Units Code -->
@@ -2359,9 +2375,9 @@ Changes will be proper extensions or constraints on that schema.
 							<!-- Date/Time of observation YYYYMMDDHHMMSS-ZZZZ 
 								This represents the physiologically significant time of the observation which for lab tests equals the 
 								specimen collection date/time and is therefore redundant.	-->
-							<xsd:element name="OBX.14" type="DateTime" minOccurs="0" nillable="true"/>
+							<xsd:element name="OBX.14" type="DateTime" minOccurs="0"/>
 							<!-- Responsible Observer(s) Will represent the proficiency tested technician who performed the test-->
-							<xsd:element name="OBX.16" minOccurs="0" nillable="true"
+							<xsd:element name="OBX.16" minOccurs="0"
 								maxOccurs="unbounded">
 								<xsd:complexType>
 									<xsd:sequence>
@@ -2383,7 +2399,7 @@ Changes will be proper extensions or constraints on that schema.
 										<!-- Name suffix (sr. jr. etc.) of observer  -->
 										<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
 										<!--Assigning authority of ID in XCN.1 -->
-										<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+										<xsd:element name="XCN.9" minOccurs="0">
 											<xsd:complexType>
 												<xsd:sequence>
 												<!-- Lab's OID or OID of Lab's employee number system -->
@@ -2397,7 +2413,7 @@ Changes will be proper extensions or constraints on that schema.
 								</xsd:complexType>
 							</xsd:element>
 							<!-- Method: Identifies specific NAHLN method version or for future use, local method -->
-							<xsd:element name="OBX.17" minOccurs="0" nillable="true">
+							<xsd:element name="OBX.17" minOccurs="0">
 								<xsd:complexType>
 									<xsd:sequence>
 										<!-- OID for method -->
@@ -2425,7 +2441,7 @@ Changes will be proper extensions or constraints on that schema.
 								</xsd:complexType>
 							</xsd:element>
 							<!-- Equipment Instance Identifier: IDs specific machine(s) used. -->
-							<xsd:element name="OBX.18" minOccurs="0" nillable="true"
+							<xsd:element name="OBX.18" minOccurs="0"
 								maxOccurs="unbounded">
 								<xsd:complexType>
 									<xsd:sequence>
