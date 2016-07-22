@@ -285,8 +285,8 @@ Changes will be proper extensions or constraints on that schema.
 				<!-- Header consists of MSH for Routing and PV1 for Accession Number -->
 				<xsd:element ref="MSH"/>
 				<xsd:element ref="PV1"/>
-				<!-- One instance was used for listing the reason for testing.  This is now
-					 to be sent in OBR.31.  -->
+				<!-- Used to add facts about the entire accession, location, etc.
+				     Current examples # at risk, # ill, # dead -->
 				<xsd:element name="OBX" type="VISIT.OBX" minOccurs="0"
 					maxOccurs="unbounded"/>
 				<!-- And one or more roles for Submitter plus, depending on program, collector, premises, etc. -->
