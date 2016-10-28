@@ -12,6 +12,7 @@ Changes will be proper extensions or constraints on that schema.
  	7/11/16 Removed nillable throughout
  	7/12/16 Made PID.35 mandatory
  	7/13/16 Added OBX.7 reference range to the RESULT OBX
+ 	10/28/16 Added OBX.23 to RESULT OBX to handle test performed at a different lab
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -150,7 +151,8 @@ Changes will be proper extensions or constraints on that schema.
 			<xsd:enumeration value="PE"/>
 			<xsd:enumeration value="QC"/>
 			<xsd:enumeration value="SK"/>
-			<xsd:enumeration value="YT"/>			
+			<xsd:enumeration value="YT"/>	
+			<!-- TODO Add Mexican States -->
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="YN">
@@ -820,8 +822,9 @@ Changes will be proper extensions or constraints on that schema.
 									</xsd:restriction>
 								</xsd:simpleType>
 							</xsd:element>
-							<!-- Location Description -->
+							<!-- Location Description: For SHIC this field identifies the fine-grained Premises Type -->
 							<xsd:element name="PL.9" type="xsd:string" minOccurs="0"/>
+							<!-- TODO Add enumeration for SHIC Premises Types -->
 							<!-- Location Identifier -->
 							<xsd:element name="PL.10" minOccurs="0">
 								<xsd:complexType>
@@ -2472,6 +2475,27 @@ Changes will be proper extensions or constraints on that schema.
 										<xsd:element name="EI.3" type="OID"/>
 										<!-- NAHLN Constant "ISO" -->
 										<xsd:element name="EI.4" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Name and Identifier of Lab actually performing the test if different -->
+							<xsd:element name="OBX.23" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Name of lab -->
+										<xsd:element name="XON.1" minOccurs="1" type="nonNullString"/>
+										<!-- Assigning authority of lab's ID (required if ID provided) -->
+										<xsd:element name="XON.6" minOccurs="0">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- OID of Assigning authority -->
+													<xsd:element name="HD.2" minOccurs="1" type="OID"/>
+													<xsd:element name="HD.3" minOccurs="1" type="ISO"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<!-- Identifier of lab (optional) -->
+										<xsd:element name="XON.10" minOccurs="0" type="nonNullString"/>
 									</xsd:sequence>
 								</xsd:complexType>
 							</xsd:element>
