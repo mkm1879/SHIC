@@ -13,6 +13,9 @@ Changes will be proper extensions or constraints on that schema.
  	7/12/16 Made PID.35 mandatory
  	7/13/16 Added OBX.7 reference range to the RESULT OBX
  	10/28/16 Added OBX.23 to RESULT OBX to handle test performed at a different lab
+ 		This needs to default to the value in MSH.22 which defaults to the value in MSH.4
+ 	10/28/16 Added MSH.22 to handle testing lab different from sending facility
+ 	    This needs to default to the value MSH.4 (for XON.10)
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -458,6 +461,27 @@ Changes will be proper extensions or constraints on that schema.
 							<xsd:element name="EI.3" type="OID" minOccurs="0"/>
 							<!-- NAHLN Constant ISO -->
 							<xsd:element name="EI.4" type="ISO" minOccurs="0"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Name and Identifier of Lab actually performing the tests in this message -->
+				<xsd:element name="MSH.22" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Name of lab -->
+							<xsd:element name="XON.1" minOccurs="1" type="nonNullString"/>
+							<!-- Assigning authority of lab's ID (required if ID provided) -->
+							<xsd:element name="XON.6" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- OID of Assigning authority -->
+										<xsd:element name="HD.2" minOccurs="1" type="OID"/>
+										<xsd:element name="HD.3" minOccurs="1" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Identifier of lab (optional) -->
+							<xsd:element name="XON.10" minOccurs="0" type="nonNullString"/>
 						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
