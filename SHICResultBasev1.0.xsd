@@ -16,6 +16,7 @@ Changes will be proper extensions or constraints on that schema.
  		This needs to default to the value in MSH.22 which defaults to the value in MSH.4
  	10/28/16 Added MSH.22 to handle testing lab different from sending facility
  	    This needs to default to the value MSH.4 (for XON.10)
+ 	10/31/16 Added ED datatype to RESULT OBX
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -284,6 +285,36 @@ Changes will be proper extensions or constraints on that schema.
 			<xsd:minLength value="1"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="DataType">
+		<!-- Note: Initial emumeration includes just Canada, Mexico and US.  This can be expanded as needed. -->
+		<xsd:restriction base="xsd:string">
+			<!-- PDF -->
+			<xsd:enumeration value="application/pdf"/>
+			<!-- XML -->
+			<xsd:enumeration value="text/xml"/>
+			<!-- .DOC -->
+			<xsd:enumeration value="application/msword"/>
+			<!-- .DOCX -->
+			<xsd:enumeration value="application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>
+			<!-- .XLS -->
+			<xsd:enumeration value="application/vnd.ms-excel"/>
+			<!-- .XLSX -->
+			<xsd:enumeration value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+			<!-- Others as needed -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Encoding">
+		<!-- Note: Initial emumeration includes just Canada, Mexico and US.  This can be expanded as needed. -->
+		<xsd:restriction base="xsd:string">
+			<!-- Base 64 (default) -->
+			<xsd:enumeration value="Base64"/>
+			<!-- ASCII (plain text) -->
+			<xsd:enumeration value="A"/>
+			<!-- HEX (Pairs of hex octets -->
+			<xsd:enumeration value="Hex"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
 	<xsd:element name="OPU_R25">
 		<xsd:complexType>
 			<xsd:sequence>
@@ -2306,6 +2337,8 @@ Changes will be proper extensions or constraints on that schema.
 										<!-- Structured Numeric -->
 										<xsd:enumeration value="ST"/>
 										<!-- String -->
+										<xsd:enumeration value="ED"/>
+										<!-- Encapsulated Data -->
 									</xsd:restriction>
 								</xsd:simpleType>
 							</xsd:element>
@@ -2333,38 +2366,33 @@ Changes will be proper extensions or constraints on that schema.
 								<xsd:complexType mixed="true">
 									<xsd:sequence>
 										<!-- Comparator: =, <, <=, >, >= -->
-										<xsd:element name="SN.1" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="SN.1" type="xsd:string" minOccurs="0"/>
 										<!-- Number 1 -->
-										<xsd:element name="SN.2" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="SN.2" type="xsd:string" minOccurs="0"/>
 										<!-- Separator: :, -, etc.-->
-										<xsd:element name="SN.3" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="SN.3" type="xsd:string" minOccurs="0"/>
 										<!-- Number 2 -->
-										<xsd:element name="SN.4" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="SN.4" type="xsd:string" minOccurs="0"/>
 										<!-- Code -->
-										<xsd:element name="CWE.1" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="CWE.1" type="xsd:string" minOccurs="0"/>
 										<!-- Text -->
-										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 										<!-- Code System -->
-										<xsd:element name="CWE.3" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="CWE.3" type="xsd:string" minOccurs="0"/>
 										<!-- Alt Code -->
-										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"/>
 										<!-- Alt Text -->
-										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"/>
 										<!-- Alt Code System -->
-										<xsd:element name="CWE.6" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="CWE.6" type="xsd:string" minOccurs="0"/>
 										<!-- Original Text -->
-										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0"
-											nillable="true"/>
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0"/>
+										<!-- Data type -->
+										<xsd:element name="ED.2" type="DataType" minOccurs="0"/>
+										<!-- Encoding -->
+										<xsd:element name="ED.4" type="Encoding" minOccurs="0"/>
+										<!-- Data -->
+										<xsd:element name="ED.5" type="nonNullString" minOccurs="0"/>
 									</xsd:sequence>
 								</xsd:complexType>
 							</xsd:element>
