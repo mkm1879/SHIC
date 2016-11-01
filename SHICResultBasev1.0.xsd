@@ -17,6 +17,7 @@ Changes will be proper extensions or constraints on that schema.
  	10/28/16 Added MSH.22 to handle testing lab different from sending facility
  	    This needs to default to the value MSH.4 (for XON.10)
  	10/31/16 Added ED datatype to RESULT OBX
+ 	11/01/16 Pulled Role type list into named type enumeration.  Added DIST and PAY roles.
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -313,6 +314,27 @@ Changes will be proper extensions or constraints on that schema.
 			<!-- HEX (Pairs of hex octets -->
 			<xsd:enumeration value="Hex"/>
 		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Role">
+		<!-- Note: Initial emumeration includes just Canada, Mexico and US.  This can be expanded as needed. -->
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="SUB"/>
+				<!-- Submitter -->
+				<xsd:enumeration value="COL"/>
+				<!-- Collector -->
+				<xsd:enumeration value="PREM"/>
+				<!-- Source Premises -->
+				<xsd:enumeration value="AT"/>
+				<!-- Attending Veterinarian -->
+				<xsd:enumeration value="PAR"/>
+				<!-- Parent Company -->
+				<xsd:enumeration value="LAB"/>
+				<!-- Referring Laboratory -->
+				<xsd:enumeration value="DIST"/>
+				<!-- Report Distribution Recipient -->
+				<xsd:enumeration value="PAY"/>
+				<!-- Full or partial payor on the accession -->
+			</xsd:restriction>
 	</xsd:simpleType>
 	
 	<xsd:element name="OPU_R25">
@@ -679,24 +701,7 @@ Changes will be proper extensions or constraints on that schema.
 					<xsd:complexType>
 						<xsd:sequence>
 							<!-- NAHLN code for Role "SUB", "COL", "PREM", etc. -->
-							<xsd:element name="CWE.1">
-								<xsd:simpleType>
-									<xsd:restriction base="xsd:string">
-										<xsd:enumeration value="SUB"/>
-										<!-- Submitter -->
-										<xsd:enumeration value="COL"/>
-										<!-- Collector -->
-										<xsd:enumeration value="PREM"/>
-										<!-- Source Premises -->
-										<xsd:enumeration value="AT"/>
-										<!-- Attending Veterinarian -->
-										<xsd:enumeration value="PAR"/>
-										<!-- Parent Company -->
-										<xsd:enumeration value="LAB"/>
-										<!-- Referring Laboratory -->
-									</xsd:restriction>
-								</xsd:simpleType>
-							</xsd:element>
+							<xsd:element name="CWE.1" type="Role"/>
 							<!-- Spelled out role "Submitting Party", "Specimen Collector", "Source Premises", etc. -->
 							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"
 								nillable="true"/>
