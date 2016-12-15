@@ -9,7 +9,7 @@ Changes will be proper extensions or constraints on that schema.
  <!-- CHANGE LOG
  	7/11/16 Initial draft copy from NAHLN
  	7/11/16 Added country to all XAD addresses including CountryCode data type with CAN MEX and USA
- 	7/11/16 Removed nillable throughout
+ 	7/11/16 Removed nillable throughout (but missed some apparently.)
  	7/12/16 Made PID.35 mandatory
  	7/13/16 Added OBX.7 reference range to the RESULT OBX
  	10/28/16 Added OBX.23 to RESULT OBX to handle test performed at a different lab
@@ -21,7 +21,10 @@ Changes will be proper extensions or constraints on that schema.
 	11/22/2016  Removed optional fields for parsed phone number components.  
 		Only full unformatted phone number supported by SHIC.
 		Added Regular expression for phone number as 10, 13, or 14 digits with any formatting.
-	11/22/2016 Removed nillable (never used).
+	11/22/2016 Removed remaining nillable (never used).
+	12/08/2016 Added mixed="true" to Visit.OBX.5 
+	12/08/2016 Changed Coding System of OBX.6 to UCUM defined as a type
+	12/08/2016 Added ED.2-5 to Visit.OBX.5 Defined Base64 as type for ED.4 "Encoding"
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -50,6 +53,16 @@ Changes will be proper extensions or constraints on that schema.
 	<xsd:simpleType name="ISO">
 		<xsd:restriction base="xsd:string">
 			<xsd:pattern value="ISO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="UCUM">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="UCUM"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Base64">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="Base64"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="LN">
@@ -638,7 +651,7 @@ Changes will be proper extensions or constraints on that schema.
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="OBX.5">
-				<xsd:complexType>
+				<xsd:complexType mixed="true">
 					<xsd:sequence>
 						<!-- In normal usage CWE.1 - CWE.3 will be used and the rest not used
 							the optionality is retained for future use and for unusual cases where
@@ -659,6 +672,15 @@ Changes will be proper extensions or constraints on that schema.
 						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0"/>
 						<!-- Original text of reason for visit -->
 						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0"/>
+						<!--MIME Type of Data.  TODO enumerate MIME types allowed-->
+						<xsd:element name="ED.2" type="xsd:string" minOccurs="0"/>
+						<!--EData Subtype-->
+						<xsd:element name="ED.3" type="xsd:string" minOccurs="0"/>
+						<!--Encoding  TODO enumerate encodings or simply define as Base64 -->
+						<xsd:element name="ED.4" type="xsd:string" minOccurs="0"/>
+						<!--Data-->
+						<xsd:element name="ED.5" type="xsd:string" minOccurs="0"/>
+						
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -1383,7 +1405,7 @@ Changes will be proper extensions or constraints on that schema.
 						<!-- Units Text -->
 						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN constant "ISO" -->
-						<xsd:element name="CWE.3" type="ISO"/>
+						<xsd:element name="CWE.3" type="UCUM"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -1909,7 +1931,7 @@ Changes will be proper extensions or constraints on that schema.
 						<!-- Units Text -->
 						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 						<!-- NAHLN constant "ISO" -->
-						<xsd:element name="CWE.3" type="ISO"/>
+						<xsd:element name="CWE.3" type="UCUM"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -2261,7 +2283,7 @@ Changes will be proper extensions or constraints on that schema.
 										<!-- Units Text -->
 										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
 										<!-- NAHLN constant "ISO" -->
-										<xsd:element name="CWE.3" type="ISO"/>
+										<xsd:element name="CWE.3" type="UCUM"/>
 									</xsd:sequence>
 								</xsd:complexType>
 							</xsd:element>
