@@ -25,6 +25,8 @@ Changes will be proper extensions or constraints on that schema.
 	12/08/2016 Added mixed="true" to Visit.OBX.5 
 	12/08/2016 Changed Coding System of OBX.6 to UCUM defined as a type
 	12/08/2016 Added ED.2-5 to Visit.OBX.5 Defined Base64 as type for ED.4 "Encoding"
+	01/17/2016 Edited or removed incorrect comments in types used by ED and in defintion of Accession Detail
+	01/17/2016 Removed the deprecated PV1.51 element.  
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -302,7 +304,7 @@ Changes will be proper extensions or constraints on that schema.
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="DataType">
-		<!-- Note: Initial emumeration includes just Canada, Mexico and US.  This can be expanded as needed. -->
+		<!-- Note: Includes a few common types of attached files.  This can be expanded as needed. -->
 		<xsd:restriction base="xsd:string">
 			<!-- PDF -->
 			<xsd:enumeration value="application/pdf"/>
@@ -320,7 +322,7 @@ Changes will be proper extensions or constraints on that schema.
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="Encoding">
-		<!-- Note: Initial emumeration includes just Canada, Mexico and US.  This can be expanded as needed. -->
+		<!-- Note: Includes common encodings.  The default Base 64 is highly encourage.  This can be expanded as needed. -->
 		<xsd:restriction base="xsd:string">
 			<!-- Base 64 (default) -->
 			<xsd:enumeration value="Base64"/>
@@ -622,9 +624,6 @@ Changes will be proper extensions or constraints on that schema.
 						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
-				<!-- NAHLN Constant "V" not used here but required for HL7 compliance
-				     This was WRONG.  Not required.   Should not be sent! -->
-				<xsd:element name="PV1.51" type="xsd:string" minOccurs="0"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
@@ -917,7 +916,6 @@ Changes will be proper extensions or constraints on that schema.
 				<!-- NK1 Represents the "Owner" who is the person most responsible for the animals or location being tested -->
 				<xsd:element ref="NK1"/>
 				<xsd:element ref="OPU_R25.PATIENT" minOccurs="0"/>
-				<!-- set to in element definition below.-->
 				<xsd:element ref="OPU_R25.SPECIMEN" maxOccurs="unbounded"/>
 			</xsd:sequence>
 		</xsd:complexType>
