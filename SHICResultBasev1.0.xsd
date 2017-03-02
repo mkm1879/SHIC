@@ -27,6 +27,7 @@ Changes will be proper extensions or constraints on that schema.
 	12/08/2016 Added ED.2-5 to Visit.OBX.5 Defined Base64 as type for ED.4 "Encoding"
 	01/17/2016 Edited or removed incorrect comments in types used by ED and in defintion of Accession Detail
 	01/17/2016 Removed the deprecated PV1.51 element.  
+  03/02/2017 Bret Crim - Added the SPM.31 segment for additional specimen identifiers.
  -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
 	<xsd:simpleType name="OID">
@@ -1867,6 +1868,37 @@ Changes will be proper extensions or constraints on that schema.
 						</xsd:sequence>
 					</xsd:complexType>
 				</xsd:element>
+        <!-- Z field for additional specimen identifiers. Is in v2.8. -->
+        <xsd:element name="SPM.31" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <!-- Identifier -->
+              <xsd:element name="CX.1" type="nonNullString"/>
+              <!-- Assigning Authority -->
+              <xsd:element name="CX.4" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <!-- Either Text of Assigner here -->
+                    <xsd:element name="HD.1" type="xsd:string"	minOccurs="0"/>
+                    <!-- OR OID of Assigner (preferred) here -->
+                    <xsd:element name="HD.2" type="OID" minOccurs="0"/>
+                    <!-- If above is an OID, this is "ISO" if text, omit HD.3 -->
+                    <xsd:element name="HD.3" type="ISO" minOccurs="0"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <!-- Type code for type of ID such as tube no etc... -->
+              <xsd:element name="CX.5" minOccurs="0">
+                <xsd:simpleType>
+                  <xsd:restriction base="xsd:string">
+                    <!-- TubeNo -->
+                    <xsd:enumeration value="T"/>
+                  </xsd:restriction>
+                </xsd:simpleType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
